@@ -1,5 +1,14 @@
 import { Modal } from './UI/Modal';
 import { Map } from './UI/Map';
+import { config } from './config';
+
+const apikey = config.api_key;
+const head = document.getElementsByTagName('head')[0];
+const sc = document.createElement('script');
+sc.defer = true;
+sc.async = true;
+sc.src = `https://maps.googleapis.com/maps/api/js?key=${apikey}`;
+head.appendChild(sc);
 
 class Placefinder {
   constructor() {
