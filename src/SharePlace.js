@@ -1,6 +1,7 @@
 import { Modal } from './UI/Modal';
 import { Map } from './UI/Map';
 import { config } from './config';
+import { getCoords } from './Utility/Location';
 
 const apikey = config.api_key;
 const head = document.getElementsByTagName('head')[0];
@@ -48,7 +49,24 @@ class Placefinder {
     
     });
   };
-  findAddressHandler() {};
+  async findAddressHandler(event) {
+    event.preventDefault();
+    const address = event.target.querySelector('input').value;
+    if (!address || address.trim().length === 0) {
+      alert('Invalid address entered - please try again!')
+      return;
+    }
+    const modal = new Modal('loading-modal-content', 'Loading location - Please wait!');
+    modal.show();
+    try {
+      const coordinates = await getCoords(address);
+      this.selectPlace(coordinates);
+    } catch (err) {
+        alert(err.message);
+    }
+    modal.hide();
+  }
+
 
 }
 const newPlaceFinder = new Placefinder();
