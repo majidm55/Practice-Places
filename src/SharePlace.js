@@ -1,13 +1,23 @@
 import { Modal } from './UI/Modal';
+import { Map } from './UI/Map';
 
 class Placefinder {
   constructor() {
     const addressForm = document.querySelector('form');
     const locateUserBtn = document.getElementById('locate-btn');
 
-    locateUserBtn.addEventListener('click', this.locateUserHandler);
-    addressForm.addEventListener('submit', this.findAddressHandler);
+    locateUserBtn.addEventListener('click', this.locateUserHandler.bind(this));
+    addressForm.addEventListener('submit', this.findAddressHandler.bind(this));
   }
+
+  selectPlace(coordinates) {
+    if (this.map) {
+      this.map.render(coordinates);
+    } else {
+      this.map = new Map(coordinates);
+    }
+  }
+
   locateUserHandler() {
     if (!navigator.geolocation) {
       alert('Location feature not available in your browser, please use a modern browser or manually enter the address');
@@ -21,7 +31,7 @@ class Placefinder {
         lat: successResult.coords.latitude,
         lng: successResult.coords.longitude
       };
-      console.log(coordinates);
+      this.selectPlace(coordinates);
     
     }, error => {
       modal.hide();
