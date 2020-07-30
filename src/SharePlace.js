@@ -18,8 +18,26 @@ class Placefinder {
     const locateUserBtn = document.getElementById('locate-btn');
 
     locateUserBtn.addEventListener('click', this.locateUserHandler.bind(this));
-    // this.shareBtn.addEventListener('click');
+    this.shareBtn.addEventListener('click', this.sharePlaceHandler);
     addressForm.addEventListener('submit', this.findAddressHandler.bind(this));
+  }
+
+  sharePlaceHandler() {
+    const sharedLinkInput = document.getElementById('share-link');
+    if (!navigator.clipboard) {
+      sharedLinkInput.select();
+      return;
+    }
+
+    navigator.clipboard.writeText(sharedLinkInput.value)
+    .then(() => {
+      alert('Copied into clipboard')
+    })
+    .catch(err => {
+      console.log(err);
+      sharedLinkInput.select();
+
+    });
   }
 
   selectPlace(coordinates, address) {
